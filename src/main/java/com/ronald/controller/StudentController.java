@@ -19,9 +19,9 @@ public class StudentController {
         List<Student> students = service.readAll();
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
-    @GetMapping("/id")
+    @GetMapping("/{id}")
     public ResponseEntity<Student> readById(@PathVariable("id") Integer id) throws Exception{
-        Student student = service.getStudentById(id);
+        Student student = service.readById(id);
         if (student == null){
             System.out.println("No existe Estudiante: "+id);
         }
@@ -37,7 +37,7 @@ public class StudentController {
         Student student1 = service.update(student);
         return new ResponseEntity<>(student1, HttpStatus.OK);
     }
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception{
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
