@@ -34,11 +34,19 @@ public class StudentController {
     }
     @PutMapping
     public ResponseEntity<Student> update(@RequestBody Student student) throws Exception{
+        Student std = service.readById(student.getIdStudent());
+        if (std == null){
+            throw new Exception("STUDENT NOT FOUND");
+        }
         Student student1 = service.update(student);
         return new ResponseEntity<>(student1, HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception{
+        Student obj = service.readById(id);
+        if (obj == null){
+            throw new ClassNotFoundException("STUDENT NOT FOUND");
+        }
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
