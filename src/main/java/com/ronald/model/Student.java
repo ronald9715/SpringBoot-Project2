@@ -1,5 +1,6 @@
 package com.ronald.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 //JPA
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

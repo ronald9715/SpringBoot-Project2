@@ -1,5 +1,9 @@
 package com.ronald.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,6 +18,7 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 //JPA
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Enrollment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +34,7 @@ public class Enrollment {
     //Relacion Logica Maestro - Detalle
     //El mappedBy debe tener el nombre que tiene la clase EnrollmentDetail
     @OneToMany(mappedBy = "enrollment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<EnrollmentDetail> details;
     @Column(nullable = false)
     private boolean status;

@@ -4,7 +4,8 @@ import com.ronald.repo.IGenericRepo;
 import com.ronald.service.ICRUD;
 
 import java.util.List;
-
+// Se implementan las operaciones definidas en la interfaz
+//Tambien se agrega un metodo getRepo() para traer la instancia correspondiente(Polimorfismo)
 public abstract class CRUDImpl<T,ID> implements ICRUD<T,ID> {
     abstract IGenericRepo<T, ID> getRepo();
     @Override

@@ -1,7 +1,7 @@
 package com.ronald.service;
 
 import java.util.List;
-
+// Se difinen las operaciones que se va a poder realizar
 public interface ICRUD<T,ID> {
     T create(T t) throws Exception;
     T update(T t) throws Exception;
