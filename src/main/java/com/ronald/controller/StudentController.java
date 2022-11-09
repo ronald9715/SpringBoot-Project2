@@ -1,45 +1,56 @@
 package com.ronald.controller;
 
+import com.ronald.dto.StudentDTO;
 import com.ronald.model.Student;
 import com.ronald.service.IStudentService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/students")
+@CrossOrigin(origins = "*")
 public class StudentController {
     @Autowired
     private IStudentService service;
+
+    @Autowired
+    @Qualifier("studentMapper")
+    private ModelMapper mapper;
     @GetMapping
-    public ResponseEntity<List<Student>> readAll() throws Exception{
-        List<Student> students = service.readAll();
+    public ResponseEntity<List<StudentDTO>> readAll() throws Exception{
+        List<StudentDTO> students = service.readAll().stream().map(student -> mapper.map(student, StudentDTO.class)).collect(Collectors.toList()); ;
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Student> readById(@PathVariable("id") Integer id) throws Exception{
+    public ResponseEntity<StudentDTO> readById(@PathVariable("id") Integer id) throws Exception{
         Student student = service.readById(id);
         if (student == null){
             System.out.println("No existe Estudiante: "+id);
         }
-        return new ResponseEntity<>(student, HttpStatus.OK);
+        return new ResponseEntity<>(mapper.map(student, StudentDTO.class), HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<Student> create(@RequestBody Student student) throws Exception{
-        Student student1 = service.create(student);
-        return new ResponseEntity<>(student1, HttpStatus.CREATED);
+    public ResponseEntity<StudentDTO> create(@RequestBody StudentDTO student) throws Exception{
+
+        Student student1 = service.create(mapper.map(student, Student.class));
+        return new ResponseEntity<>(mapper.map(student1, StudentDTO.class), HttpStatus.CREATED);
     }
     @PutMapping
-    public ResponseEntity<Student> update(@RequestBody Student student) throws Exception{
-        Student std = service.readById(student.getIdStudent());
+    public ResponseEntity<StudentDTO> update(@RequestBody StudentDTO student) throws Exception{
+        //student.getId()
+        Student std = service.readById(student.getId());
         if (std == null){
             throw new Exception("STUDENT NOT FOUND");
         }
-        Student student1 = service.update(student);
-        return new ResponseEntity<>(student1, HttpStatus.OK);
+        Student student1 = service.update(mapper.map(student, Student.class));
+        return new ResponseEntity<>(mapper.map(student1, StudentDTO.class), HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception{
