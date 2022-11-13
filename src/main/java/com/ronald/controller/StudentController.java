@@ -1,6 +1,7 @@
 package com.ronald.controller;
 
 import com.ronald.dto.StudentDTO;
+import com.ronald.exception.ModelNotFoundException;
 import com.ronald.model.Student;
 import com.ronald.service.IStudentService;
 import org.modelmapper.ModelMapper;
@@ -33,7 +34,7 @@ public class StudentController {
     public ResponseEntity<StudentDTO> readById(@PathVariable("id") Integer id) throws Exception{
         Student student = service.readById(id);
         if (student == null){
-            System.out.println("No existe Estudiante: "+id);
+            throw new ModelNotFoundException("STUDENT NOT FOUND");
         }
         return new ResponseEntity<>(mapper.map(student, StudentDTO.class), HttpStatus.OK);
     }
@@ -48,7 +49,7 @@ public class StudentController {
         //student.getId()
         Student std = service.readById(student.getId());
         if (std == null){
-            throw new Exception("STUDENT NOT FOUND");
+            throw new ModelNotFoundException("STUDENT NOT FOUND");
         }
         Student student1 = service.update(mapper.map(student, Student.class));
         return new ResponseEntity<>(mapper.map(student1, StudentDTO.class), HttpStatus.OK);
@@ -57,7 +58,7 @@ public class StudentController {
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception{
         Student obj = service.readById(id);
         if (obj == null){
-            throw new ClassNotFoundException("STUDENT NOT FOUND");
+            throw new ModelNotFoundException("STUDENT NOT FOUND");
         }
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

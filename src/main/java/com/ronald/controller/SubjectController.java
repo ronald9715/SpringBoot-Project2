@@ -1,6 +1,7 @@
 package com.ronald.controller;
 
 import com.ronald.dto.SubjectDTO;
+import com.ronald.exception.ModelNotFoundException;
 import com.ronald.model.Student;
 import com.ronald.model.Subject;
 import com.ronald.service.ISubjectService;
@@ -34,7 +35,7 @@ public class SubjectController {
     public ResponseEntity<SubjectDTO> readById(@PathVariable("id") Integer id) throws Exception{
         Subject subject = service.readById(id);
         if (subject == null){
-            System.out.println("SUBJECT NOT FOUND");
+            throw new ModelNotFoundException("SUBJECT NOT FOUND");
         }
         return new ResponseEntity<>(mapper.map(subject, SubjectDTO.class), HttpStatus.OK);
     }
@@ -47,7 +48,7 @@ public class SubjectController {
     public ResponseEntity<SubjectDTO> update(@Valid @RequestBody SubjectDTO sbj) throws Exception{
         Subject obj = service.readById(sbj.getId());
         if (obj == null){
-            throw new Exception("SUBJECT NOT FOUND");
+            throw new ModelNotFoundException("SUBJECT NOT FOUND");
         }
         Subject subject = service.update(mapper.map(sbj, Subject.class));
         return new ResponseEntity<>(mapper.map(subject, SubjectDTO.class), HttpStatus.OK);
@@ -56,7 +57,7 @@ public class SubjectController {
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception{
         Subject obj = service.readById(id);
         if (obj == null){
-            throw new ClassNotFoundException("SUBJECT NOT FOUND");
+            throw new ModelNotFoundException("SUBJECT NOT FOUND");
         }
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

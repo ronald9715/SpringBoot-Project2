@@ -1,6 +1,7 @@
 package com.ronald.controller;
 
 import com.ronald.dto.EnrollmentDTO;
+import com.ronald.exception.ModelNotFoundException;
 import com.ronald.model.Enrollment;
 import com.ronald.service.IEnrollmentService;
 import org.modelmapper.ModelMapper;
@@ -32,7 +33,7 @@ public class EnrollmentController {
     public ResponseEntity<EnrollmentDTO> readById(@PathVariable("id") Integer id) throws Exception{
         Enrollment enrollment = service.readById(id);
         if (enrollment == null){
-            throw new Exception("Enrollment not found");
+            throw new ModelNotFoundException("Enrollment not found");
         }
         return new ResponseEntity<>(mapper.map(enrollment, EnrollmentDTO.class), HttpStatus.OK);
     }
@@ -43,6 +44,10 @@ public class EnrollmentController {
     }
     @PutMapping
     public ResponseEntity<EnrollmentDTO> update(@Valid @RequestBody EnrollmentDTO enrollment) throws Exception{
+        Enrollment obj1 = service.readById(enrollment.getId());
+        if (obj1 == null){
+            throw new ModelNotFoundException("Enrollment NOT FOUND");
+        }
         Enrollment obj = service.update(mapper.map(enrollment, Enrollment.class));
         return new ResponseEntity<>(mapper.map(obj, EnrollmentDTO.class), HttpStatus.OK);
     }
@@ -50,7 +55,7 @@ public class EnrollmentController {
     public ResponseEntity<Void> deleteById(@PathVariable("id") Integer id) throws Exception{
         Enrollment obj = service.readById(id);
         if (obj == null){
-            throw  new Exception("Enrollment is not found");
+            throw  new ModelNotFoundException("Enrollment not found");
         }
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
