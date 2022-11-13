@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,12 +39,12 @@ public class SubjectController {
         return new ResponseEntity<>(mapper.map(subject, SubjectDTO.class), HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<SubjectDTO> create(@RequestBody SubjectDTO sbj) throws Exception{
+    public ResponseEntity<SubjectDTO> create(@Valid @RequestBody SubjectDTO sbj) throws Exception{
         Subject subject = service.create(mapper.map(sbj, Subject.class));
         return new ResponseEntity<>(mapper.map(subject, SubjectDTO.class), HttpStatus.CREATED);
     }
     @PutMapping
-    public ResponseEntity<SubjectDTO> update(@RequestBody SubjectDTO sbj) throws Exception{
+    public ResponseEntity<SubjectDTO> update(@Valid @RequestBody SubjectDTO sbj) throws Exception{
         Subject obj = service.readById(sbj.getId());
         if (obj == null){
             throw new Exception("SUBJECT NOT FOUND");

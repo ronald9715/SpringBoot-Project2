@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,9 +19,17 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EnrollmentDTO {
     private Integer id;
+    @NotNull
+    @NotEmpty
     private LocalDateTime localDateTime;
+    @NotNull
+    @NotEmpty
     private StudentDTO student;
+    @NotNull
+    @NotEmpty
     @JsonManagedReference
     private List<EnrollmentDetailDTO> details;
+    @NotNull
+    @NotEmpty
     private boolean status;
 }

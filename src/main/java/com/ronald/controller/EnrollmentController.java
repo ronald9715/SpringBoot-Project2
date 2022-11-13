@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,12 +37,12 @@ public class EnrollmentController {
         return new ResponseEntity<>(mapper.map(enrollment, EnrollmentDTO.class), HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<EnrollmentDTO> create(@RequestBody EnrollmentDTO enrollment) throws Exception{
+    public ResponseEntity<EnrollmentDTO> create(@Valid @RequestBody EnrollmentDTO enrollment) throws Exception{
         Enrollment obj = service.create(mapper.map(enrollment, Enrollment.class));
         return new ResponseEntity<>(mapper.map(obj, EnrollmentDTO.class), HttpStatus.CREATED);
     }
     @PutMapping
-    public ResponseEntity<EnrollmentDTO> update(@RequestBody EnrollmentDTO enrollment) throws Exception{
+    public ResponseEntity<EnrollmentDTO> update(@Valid @RequestBody EnrollmentDTO enrollment) throws Exception{
         Enrollment obj = service.update(mapper.map(enrollment, Enrollment.class));
         return new ResponseEntity<>(mapper.map(obj, EnrollmentDTO.class), HttpStatus.OK);
     }
