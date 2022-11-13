@@ -18,7 +18,6 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 //JPA
 @Entity
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Enrollment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +31,8 @@ public class Enrollment {
     @JoinColumn(name = "id_student", nullable = false, foreignKey = @ForeignKey(name = "FK_Enrollment_Student"))
     private Student student;
     //Relacion Logica Maestro - Detalle
-    //El mappedBy debe tener el nombre que tiene la clase EnrollmentDetail
+    //El mappedBy debe tener el nombre que tiene la clase en EnrollmentDetail
     @OneToMany(mappedBy = "enrollment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
     private List<EnrollmentDetail> details;
     @Column(nullable = false)
     private boolean status;

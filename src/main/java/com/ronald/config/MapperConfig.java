@@ -15,7 +15,7 @@ public class MapperConfig {
     public ModelMapper subjectMapper(){
         return new ModelMapper();
     }
-    @Bean("enrollment")
+    @Bean("enrollmentMapper")
     public ModelMapper enrollmentMapper(){
         return new ModelMapper();
     }

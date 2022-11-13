@@ -1,14 +1,18 @@
 package com.ronald.controller;
 
+import com.ronald.dto.SubjectDTO;
 import com.ronald.model.Student;
 import com.ronald.model.Subject;
 import com.ronald.service.ISubjectService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/subjects")
@@ -16,32 +20,36 @@ public class SubjectController {
     @Autowired
     private ISubjectService service;
 
+    @Autowired
+    @Qualifier("subjectMapper")
+    private ModelMapper mapper;
+
     @GetMapping
-    public ResponseEntity<List<Subject>> readAll() throws Exception{
-        List<Subject> subjects = service.readAll();
+    public ResponseEntity<List<SubjectDTO>> readAll() throws Exception{
+        List<SubjectDTO> subjects = service.readAll().stream().map(subject -> mapper.map(subject, SubjectDTO.class)).collect(Collectors.toList()); ;
         return new ResponseEntity<>(subjects, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Subject> readById(@PathVariable("id") Integer id) throws Exception{
+    public ResponseEntity<SubjectDTO> readById(@PathVariable("id") Integer id) throws Exception{
         Subject subject = service.readById(id);
         if (subject == null){
             System.out.println("SUBJECT NOT FOUND");
         }
-        return new ResponseEntity<>(subject, HttpStatus.OK);
+        return new ResponseEntity<>(mapper.map(subject, SubjectDTO.class), HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<Subject> create(@RequestBody Subject sbj) throws Exception{
-        Subject subject = service.create(sbj);
-        return new ResponseEntity<>(subject, HttpStatus.CREATED);
+    public ResponseEntity<SubjectDTO> create(@RequestBody SubjectDTO sbj) throws Exception{
+        Subject subject = service.create(mapper.map(sbj, Subject.class));
+        return new ResponseEntity<>(mapper.map(subject, SubjectDTO.class), HttpStatus.CREATED);
     }
     @PutMapping
-    public ResponseEntity<Subject> update(@RequestBody Subject sbj) throws Exception{
-        Subject obj = service.readById(sbj.getIdSubject());
+    public ResponseEntity<SubjectDTO> update(@RequestBody SubjectDTO sbj) throws Exception{
+        Subject obj = service.readById(sbj.getId());
         if (obj == null){
             throw new Exception("SUBJECT NOT FOUND");
         }
-        Subject subject = service.update(sbj);
-        return new ResponseEntity<>(subject, HttpStatus.OK);
+        Subject subject = service.update(mapper.map(sbj, Subject.class));
+        return new ResponseEntity<>(mapper.map(subject, SubjectDTO.class), HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception{
