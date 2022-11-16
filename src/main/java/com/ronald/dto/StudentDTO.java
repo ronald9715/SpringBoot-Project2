@@ -28,7 +28,6 @@ public class StudentDTO {
     @Size(min = 8, max = 8)
     private String dniStudent;
     @NotNull
-    @NotEmpty
     private int ageStudent;
 
 }

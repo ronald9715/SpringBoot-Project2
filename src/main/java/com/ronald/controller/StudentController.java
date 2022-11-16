@@ -63,5 +63,12 @@ public class StudentController {
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    //////// Customize Queries/////////////////////
+    @GetMapping("/orderbyage")
+    public ResponseEntity<List<StudentDTO>> getStudentByAgeDescending() throws Exception{
+        List<StudentDTO> list =  service.getStudentByAgeDescending().stream().map(student -> mapper.map(student, StudentDTO.class)).collect(Collectors.toList()); ;
+        return new ResponseEntity<>(list, HttpStatus.OK);
+
+    }
 
 }

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class StudentServiceImpl extends CRUDImpl<Student, Integer> implements IStudentService {
     @Autowired
@@ -18,4 +20,9 @@ public class StudentServiceImpl extends CRUDImpl<Student, Integer> implements IS
         return repo;
     }
 
+    @Override
+    public List<Student> getStudentByAgeDescending() {
+        List<Student> list = repo.findAll().stream().sorted((x1,x2)->x2.getAge()- x1.getAge()).collect(Collectors.toList());
+        return list;
+    }
 }
