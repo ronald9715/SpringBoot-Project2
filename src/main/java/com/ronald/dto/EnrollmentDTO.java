@@ -20,16 +20,13 @@ import java.util.List;
 public class EnrollmentDTO {
     private Integer id;
     @NotNull
-    @NotEmpty
     private LocalDateTime localDateTime;
     @NotNull
-    @NotEmpty
     private StudentDTO student;
     @NotNull
     @NotEmpty
     @JsonManagedReference
     private List<EnrollmentDetailDTO> details;
     @NotNull
-    @NotEmpty
     private boolean status;
 }

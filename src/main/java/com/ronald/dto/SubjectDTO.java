@@ -20,6 +20,5 @@ public class SubjectDTO {
     @Size(min = 2,max = 4)
     private String siglasSubject;
     @NotNull
-    @NotEmpty
     private boolean statusSubject;
 }
