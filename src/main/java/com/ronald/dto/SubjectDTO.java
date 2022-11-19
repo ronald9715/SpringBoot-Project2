@@ -19,6 +19,6 @@ public class SubjectDTO {
     @NotEmpty
     @Size(min = 2,max = 4)
     private String siglasSubject;
-    @NotNull
+    @NotNull// SI LE PONGO NOTEMPTY ME BOTA ERROR
     private boolean statusSubject;
 }

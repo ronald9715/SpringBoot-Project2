@@ -19,7 +19,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EnrollmentDTO {
     private Integer id;
-    @NotNull
+    @NotNull// SI LE PON NOTEMPTY ME BOTA ERROR
     private LocalDateTime localDateTime;
     @NotNull
     private StudentDTO student;
@@ -27,6 +27,6 @@ public class EnrollmentDTO {
     @NotEmpty
     @JsonManagedReference
     private List<EnrollmentDetailDTO> details;
-    @NotNull
+    @NotNull// SI LE PONGO NOTEMPTY ME BOTA ERROR
     private boolean status;
 }
