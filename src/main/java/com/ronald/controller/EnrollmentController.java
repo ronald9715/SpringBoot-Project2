@@ -3,6 +3,7 @@ package com.ronald.controller;
 import com.ronald.dto.EnrollmentDTO;
 import com.ronald.exception.ModelNotFoundException;
 import com.ronald.model.Enrollment;
+import com.ronald.model.Student;
 import com.ronald.service.IEnrollmentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -59,5 +61,11 @@ public class EnrollmentController {
         }
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    /////Show Students per Courses////////////
+    @GetMapping("/courses/students")
+    public ResponseEntity<Map<String, List<String>>> getStudentsFromCourses() throws Exception{
+        Map<String, List<String>> mapResult = service.getStudentsFromCourses();
+        return new ResponseEntity<>(mapResult, HttpStatus.OK);
     }
 }
